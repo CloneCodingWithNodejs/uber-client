@@ -3,6 +3,8 @@ import { ThemedStyledComponentsModule } from 'styled-components';
 
 interface IThemeInterface {
   blueColor: string;
+  faceBookColor: string;
+  googleColor: string;
 }
 
 const {

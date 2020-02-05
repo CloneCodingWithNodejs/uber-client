@@ -3,6 +3,7 @@
 import styled from 'styled-components';
 import React from 'react';
 import { RouteComponentProps, Link } from 'react-router-dom';
+import Helmet from 'react-helmet';
 import BackGround from '../../static/mainBackGround.jpg';
 
 const Container = styled.div`
@@ -19,21 +20,22 @@ const Header = styled.header`
 `;
 
 const Logo = styled.div`
-  width: 110px;
-  height: 110px;
+  width: 120px;
+  height: 120px;
   display: flex;
   justify-content: center;
   align-items: center;
   text-transform: uppercase;
   font-weight: 500;
   font-size: 25px;
+  background-color: black;
 `;
 
 const Title = styled.h1`
   color: white;
   text-shadow: 1px 1px 1px black;
   font-weight: bold;
-  font-size: 50pt;
+  font-size: 30pt;
 `;
 
 const Footer = styled.div``;
@@ -74,6 +76,9 @@ interface IProps extends RouteComponentProps<any> {}
 
 const LoginPresenter: React.SFC<IProps> = () => (
   <Container>
+    <Helmet>
+      <title>Login | Uber</title>
+    </Helmet>
     <Header>
       <Logo>
         <Title>uber</Title>
@@ -84,7 +89,7 @@ const LoginPresenter: React.SFC<IProps> = () => (
         <PhoneLogin>
           <Subtitle>지금 uber와 함께하세요</Subtitle>
           <FakeInput>
-            🇰🇷 +82 <Grey>핸드폰 번호를 입력해주세요</Grey>
+            <Grey>회원가입</Grey>
           </FakeInput>
         </PhoneLogin>
       </Link>
