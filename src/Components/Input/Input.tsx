@@ -3,22 +3,26 @@ import React from 'react';
 import styled from '../../typed-components';
 
 const Container = styled.input`
-  border: none;
-  border-bottom: 2px solid grey;
-  font-size: 20px;
+  font-size: 13pt;
   width: 100%;
-  padding-bottom: 10px;
+  height: 45px;
   font-weight: 500;
-  transition: border-bottom 0.1s linear;
+  border-radius: 10px;
+  border: none;
+  margin-bottom: 30px;
+  padding: 10px;
+  box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.12),
+    inset 0 1px 2px rgba(0, 0, 0, 0.24);
 `;
 
 interface IProps {
   placeholder?: string;
-  type: string;
   required?: boolean;
-  value: string;
+  type: string;
+  value?: string;
   name: string;
   onChange: any;
+  disabled?: boolean;
 }
 
 const Input: React.SFC<IProps> = ({
@@ -27,16 +31,32 @@ const Input: React.SFC<IProps> = ({
   required,
   name,
   value,
-  onChange
-}) => (
-  <Container
-    name={name}
-    type={type}
-    required={required}
-    value={value}
-    onChange={onChange}
-    placeholder={placeholder}
-  />
-);
+  onChange,
+  disabled
+}) => {
+  if (required) {
+    return (
+      <Container
+        name={name}
+        type={type}
+        required
+        value={value}
+        onChange={onChange}
+        placeholder={placeholder}
+        disabled={disabled}
+      />
+    );
+  }
+  return (
+    <Container
+      name={name}
+      type={type}
+      value={value}
+      onChange={onChange}
+      placeholder={placeholder}
+      disabled={disabled}
+    />
+  );
+};
 
 export default Input;

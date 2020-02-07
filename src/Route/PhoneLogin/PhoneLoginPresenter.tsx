@@ -61,7 +61,7 @@ const Button = styled.button`
   background: ${(props) => props.theme.googleColor};
   cursor: pointer;
   height: 50px;
-  margin-top: 200px;
+  margin-top: 120px;
   font-weight: bold;
   font-size: 13pt;
 `;
@@ -80,6 +80,7 @@ interface IProps {
   onInputChange: any;
   onSubmit: any;
   loading: any;
+  disabled: boolean;
 }
 
 const PhoneLoginPresenter: React.SFC<IProps> = ({
@@ -87,7 +88,8 @@ const PhoneLoginPresenter: React.SFC<IProps> = ({
   phoneNumber,
   onInputChange,
   onSubmit,
-  loading
+  loading,
+  disabled
 }) => (
   <Container>
     <Helmet>
@@ -115,7 +117,7 @@ const PhoneLoginPresenter: React.SFC<IProps> = ({
           onChange={onInputChange}
           type="text"
         />
-        <Button>인증번호 전송</Button>
+        <Button disabled={disabled}>인증번호 전송</Button>
       </Form>
     </MainDiv>
   </Container>

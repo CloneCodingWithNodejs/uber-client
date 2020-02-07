@@ -4,7 +4,8 @@ const theme = {
   greenColor: '#1abc9c',
   greyColor: '#7f8c8d',
   yellowColor: '#f1c40f',
-  googleColor: '#4285F4'
+  googleColor: '#4285F4',
+  blackColor: '#000000cf'
 };
 
 export default theme;

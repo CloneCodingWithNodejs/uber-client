@@ -15,6 +15,9 @@ import Settings from '../../Route/Settings/index';
 import Places from '../../Route/Places/index';
 import AddPlace from '../../Route/AddPlace/index';
 import FindAddress from '../../Route/FindAddress/index';
+import SignUpPage from '../../Route/SignUpPage/index';
+import EmailSignUp from '../../Route/EmailSignUp/index';
+import VerifyEmail from '../../Route/VerifyEmail/index';
 
 interface Iprops {
   isLoggedIn: boolean;
@@ -34,6 +37,8 @@ const LoggedOutRoutes: React.SFC = () => (
     <Route path="/phone-login" exact component={PhoneLogin} />
     <Route path="/verify-phone" exact component={VerifyPhone} />
     <Route path="/social-login" exact component={SocialLogin} />
+    <Route path="/signUp" exact component={SignUpPage} />
+    <Route path="/email-signup" exact component={EmailSignUp} />
     <Redirect from="*" to="/" />
   </Switch>
 );
@@ -47,6 +52,7 @@ const LoggedInRoutes: React.SFC = () => (
     <Route path="/places" exact component={Places} />
     <Route path="/add-place" exact component={AddPlace} />
     <Route path="/find-address" exact component={FindAddress} />
+    <Route path="/verify-email/:id" exact component={VerifyEmail} />
     <Redirect from="*" to="/" />
   </Switch>
 );

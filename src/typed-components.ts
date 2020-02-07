@@ -5,6 +5,7 @@ interface IThemeInterface {
   blueColor: string;
   faceBookColor: string;
   googleColor: string;
+  blackColor: string;
 }
 
 const {

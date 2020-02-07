@@ -85,14 +85,14 @@ const LoginPresenter: React.SFC<IProps> = () => (
       </Logo>
     </Header>
     <Footer>
-      <Link to="/phone-login">
-        <PhoneLogin>
-          <Subtitle>지금 uber와 함께하세요</Subtitle>
+      <PhoneLogin>
+        <Subtitle>지금 uber와 함께하세요</Subtitle>
+        <Link to="/phone-login">
           <FakeInput>
-            <Grey>회원가입</Grey>
+            <Grey>핸드폰으로 회원가입</Grey>
           </FakeInput>
-        </PhoneLogin>
-      </Link>
+        </Link>
+      </PhoneLogin>
       <Link to="/social-login">
         <SocialLogin>
           <SocialLink>Or connect with social</SocialLink>

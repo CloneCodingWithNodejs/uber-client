@@ -1,7 +1,10 @@
+/* eslint-disable react/jsx-wrap-multilines */
 import React from 'react';
 import Helmet from 'react-helmet';
+import FacebookLogin from 'react-facebook-login';
 import styled from '../../typed-components';
 import Background from '../../static/socialLoginBG.jpg';
+import '../../static/css/facebookBtn.css';
 
 const Container = styled.div`
   height: 100vh;
@@ -19,7 +22,6 @@ const MainDiv = styled.div`
 `;
 
 const SocialLoginForm = styled.div`
-  max-width: 650px;
   width: 50%;
   height: 50%;
   background-color: black;
@@ -27,19 +29,20 @@ const SocialLoginForm = styled.div`
   flex-direction: column;
   align-items: center;
   justify-content: center;
+  max-width: 647px;
 `;
 
-const FaceBookConnect = styled.div`
-  background-color: ${(props) => props.theme.faceBookColor};
-  height: 15%;
-  width: 100%;
-  color: white;
-  font-weight: bold;
-  padding: 8px;
-  display: flex;
-  align-items: center;
-  cursor: pointer;
-`;
+// const FaceBookConnect = styled.div`
+//   background-color: ${(props) => props.theme.faceBookColor};
+//   height: 15%;
+//   width: 100%;
+//   color: white;
+//   font-weight: bold;
+//   padding: 8px;
+//   display: flex;
+//   align-items: center;
+//   cursor: pointer;
+// `;
 
 const GoogleConnect = styled.div`
   background-color: ${(props) => props.theme.googleColor};
@@ -58,6 +61,8 @@ const SocialImage = styled.img`
   width: 40px;
   height: 36px;
   filter: invert(100%);
+  margin-right: 20px;
+  margin-left: 10px;
 `;
 
 const InnerSpan = styled.span`
@@ -77,20 +82,32 @@ const InnerSpan = styled.span`
 //   background-color: red;
 // `;
 
-const SocialLoginPresenter = () => (
+interface IProps {
+  loginCallback: (fbData) => void;
+}
+
+const SocialLoginPresenter: React.SFC<IProps> = ({ loginCallback }) => (
   <Container>
     <Helmet>
       <title>Social Login | Uber </title>
     </Helmet>
     <MainDiv>
-      <SocialLoginForm>
-        <FaceBookConnect>
-          <SocialImage
-            alt="facebook"
-            src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIyNCIgaGVpZ2h0PSIyNCIgdmlld0JveD0iMCAwIDI0IDI0Ij48cGF0aCBkPSJNMTkgMGgtMTRjLTIuNzYxIDAtNSAyLjIzOS01IDV2MTRjMCAyLjc2MSAyLjIzOSA1IDUgNWgxNGMyLjc2MiAwIDUtMi4yMzkgNS01di0xNGMwLTIuNzYxLTIuMjM4LTUtNS01em0tMyA3aC0xLjkyNGMtLjYxNSAwLTEuMDc2LjI1Mi0xLjA3Ni44ODl2MS4xMTFoM2wtLjIzOCAzaC0yLjc2MnY4aC0zdi04aC0ydi0zaDJ2LTEuOTIzYzAtMi4wMjIgMS4wNjQtMy4wNzcgMy40NjEtMy4wNzdoMi41Mzl2M3oiLz48L3N2Zz4="
-          />
-          <InnerSpan>Facebook으로 계속</InnerSpan>
-        </FaceBookConnect>
+      <SocialLoginForm className="form">
+        <FacebookLogin
+          textButton="Facebook으로 계속"
+          appId="630076941159979"
+          autoLoad={false}
+          fields="first_name,email,picture,last_name"
+          callback={loginCallback}
+          cssClass="facebook__button"
+          onClick={null}
+          icon={
+            <SocialImage
+              alt="google"
+              src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIyNCIgaGVpZ2h0PSIyNCIgdmlld0JveD0iMCAwIDI0IDI0Ij48cGF0aCBkPSJNMTkgMGgtMTRjLTIuNzYxIDAtNSAyLjIzOS01IDV2MTRjMCAyLjc2MSAyLjIzOSA1IDUgNWgxNGMyLjc2MiAwIDUtMi4yMzkgNS01di0xNGMwLTIuNzYxLTIuMjM4LTUtNS01em0tMyA3aC0xLjkyNGMtLjYxNSAwLTEuMDc2LjI1Mi0xLjA3Ni44ODl2MS4xMTFoM2wtLjIzOCAzaC0yLjc2MnY4aC0zdi04aC0ydi0zaDJ2LTEuOTIzYzAtMi4wMjIgMS4wNjQtMy4wNzcgMy40NjEtMy4wNzdoMi41Mzl2M3oiLz48L3N2Zz4="
+            />
+          }
+        />
         <GoogleConnect>
           <SocialImage
             alt="google"
