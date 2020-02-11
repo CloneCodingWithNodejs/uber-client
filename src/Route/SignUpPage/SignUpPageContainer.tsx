@@ -8,6 +8,7 @@ import SignUpPagePresenter from './SignUpPagePresenter';
 import { EMAIL_SIGN_UP } from '../EmailSignUp/EmailSignUpQueries';
 import { emailSignUp, emailSignUpVariables } from '../../types/api';
 import { LOG_USER_IN } from '../../sharedQueries';
+import Noimage from '../../static/no-image-icon.png';
 
 class SignUpPageContainer extends React.Component<any, any> {
   public emailSignUpMutation: any;
@@ -23,7 +24,7 @@ class SignUpPageContainer extends React.Component<any, any> {
       passwordDisabled: false,
       phoneDisabled: false,
       phoneNumber: '',
-      profilePhoto: '',
+      profilePhoto: Noimage,
       password: '',
       password2: ''
     };

@@ -27,15 +27,23 @@ interface IProps {
   onClick: any;
   disabled?: boolean;
   type: string;
+  className?: string;
 }
 
 const Button: React.SFC<IProps> = ({
   value,
   onClick,
   disabled = false,
-  type
+  type,
+  className
 }) => (
-  <Container value={value} disabled={false} onClick={onClick} type={type} />
+  <Container
+    value={value}
+    disabled={false}
+    onClick={onClick}
+    type={type}
+    className={className}
+  />
 );
 
 export default Button;

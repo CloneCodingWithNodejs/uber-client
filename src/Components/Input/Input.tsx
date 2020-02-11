@@ -7,22 +7,24 @@ const Container = styled.input`
   width: 100%;
   height: 45px;
   font-weight: 500;
-  border-radius: 10px;
   border: none;
   margin-bottom: 30px;
   padding: 10px;
-  box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.12),
-    inset 0 1px 2px rgba(0, 0, 0, 0.24);
+  border-bottom: 2px solid black;
+  /* border-radius: 10px; */
+  /* box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.12),
+    inset 0 1px 2px rgba(0, 0, 0, 0.24); */
 `;
 
 interface IProps {
   placeholder?: string;
   required?: boolean;
   type: string;
-  value?: string;
+  value?: any;
   name: string;
   onChange: any;
   disabled?: boolean;
+  className?: string;
 }
 
 const Input: React.SFC<IProps> = ({
@@ -32,7 +34,8 @@ const Input: React.SFC<IProps> = ({
   name,
   value,
   onChange,
-  disabled
+  disabled,
+  className
 }) => {
   if (required) {
     return (
@@ -44,6 +47,7 @@ const Input: React.SFC<IProps> = ({
         onChange={onChange}
         placeholder={placeholder}
         disabled={disabled}
+        className={className}
       />
     );
   }

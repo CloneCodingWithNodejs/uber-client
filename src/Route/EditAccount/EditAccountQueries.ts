@@ -1,29 +1,20 @@
 import { gql } from 'apollo-boost';
 
-export const SIGN_UP = gql`
-  mutation signUp(
+export const EDIT_PROFILE = gql`
+  mutation editProfile(
     $firstName: String!
     $lastName: String!
     $email: String!
-    $password: String!
     $profilePhoto: String!
-    $age: Int!
-    $phoneNumber: String!
-    $fbId: String
   ) {
-    SignUp(
+    UpdateMyProfile(
       firstName: $firstName
       lastName: $lastName
       email: $email
-      password: $password
       profilePhoto: $profilePhoto
-      age: $age
-      phoneNumber: $phoneNumber
-      fbId: $fbId
     ) {
       ok
       error
-      token
     }
   }
 `;

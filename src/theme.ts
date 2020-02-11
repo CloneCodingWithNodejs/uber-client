@@ -3,9 +3,9 @@ const theme = {
   faceBookColor: '#3b5998',
   greenColor: '#1abc9c',
   greyColor: '#7f8c8d',
-  yellowColor: '#f1c40f',
   googleColor: '#4285F4',
-  blackColor: '#000000cf'
+  blackColor: '#000000cf',
+  yellowColor: '#ffd43b'
 };
 
 export default theme;

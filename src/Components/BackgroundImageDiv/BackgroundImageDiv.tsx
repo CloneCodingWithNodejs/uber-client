@@ -5,10 +5,9 @@ const Container = styled.div`
   background-attachment: fixed;
   background-position: 100% 100%;
   display: flex;
-  height: 100%;
+  height: 100vh;
   align-items: center;
   justify-content: center;
-  background-image: url('');
 `;
 
 export default Container;

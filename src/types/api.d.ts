@@ -3,11 +3,36 @@
 // This file was automatically generated and should not be edited.
 
 // ====================================================
+// GraphQL mutation operation: editProfile
+// ====================================================
+
+export interface editProfile_UpdateMyProfile {
+  __typename: "UpdateMyProfileResponse";
+  ok: boolean;
+  error: string | null;
+}
+
+export interface editProfile {
+  UpdateMyProfile: editProfile_UpdateMyProfile;
+}
+
+export interface editProfileVariables {
+  firstName: string;
+  lastName: string;
+  email: string;
+  profilePhoto: string;
+}
+
+/* tslint:disable */
+/* eslint-disable */
+// This file was automatically generated and should not be edited.
+
+// ====================================================
 // GraphQL mutation operation: emailSignUp
 // ====================================================
 
 export interface emailSignUp_EmailSignUp {
-  __typename: 'EmailSignUpResponse';
+  __typename: "EmailSignUpResponse";
   ok: boolean;
   error: string | null;
   token: string | null;
@@ -32,11 +57,29 @@ export interface emailSignUpVariables {
 // This file was automatically generated and should not be edited.
 
 // ====================================================
+// GraphQL mutation operation: toggleDriving
+// ====================================================
+
+export interface toggleDriving_ToggleDrivingMode {
+  __typename: "ToggleDrivingModeResponse";
+  ok: boolean;
+  error: string | null;
+}
+
+export interface toggleDriving {
+  ToggleDrivingMode: toggleDriving_ToggleDrivingMode;
+}
+
+/* tslint:disable */
+/* eslint-disable */
+// This file was automatically generated and should not be edited.
+
+// ====================================================
 // GraphQL mutation operation: startPhoneVerification
 // ====================================================
 
 export interface startPhoneVerification_StartPhoneVerification {
-  __typename: 'StartPhoneVerificationResponse';
+  __typename: "StartPhoneVerificationResponse";
   ok: boolean;
   error: string | null;
 }
@@ -58,7 +101,7 @@ export interface startPhoneVerificationVariables {
 // ====================================================
 
 export interface signUp_SignUp {
-  __typename: 'SignUpResponse';
+  __typename: "SignUpResponse";
   ok: boolean;
   error: string | null;
   token: string | null;
@@ -88,7 +131,7 @@ export interface signUpVariables {
 // ====================================================
 
 export interface facebookConnect_FacebookConnect {
-  __typename: 'FaceBookConnectResponse';
+  __typename: "FaceBookConnectResponse";
   ok: boolean;
   error: string | null;
   token: string | null;
@@ -114,7 +157,7 @@ export interface facebookConnectVariables {
 // ====================================================
 
 export interface completeEmailVerification_CompleteEmailVerification {
-  __typename: 'CompleteEmailVerificationResponse';
+  __typename: "CompleteEmailVerificationResponse";
   ok: boolean;
   error: string | null;
 }
@@ -136,7 +179,7 @@ export interface completeEmailVerificationVariables {
 // ====================================================
 
 export interface verifyPhone_CompletePhoneVerification {
-  __typename: 'CompletePhoneVerificationResponse';
+  __typename: "CompletePhoneVerificationResponse";
   ok: boolean;
   error: string | null;
   token: string | null;
@@ -149,6 +192,36 @@ export interface verifyPhone {
 export interface verifyPhoneVariables {
   key: string;
   phoneNumber: string;
+}
+
+/* tslint:disable */
+/* eslint-disable */
+// This file was automatically generated and should not be edited.
+
+// ====================================================
+// GraphQL query operation: userProfile
+// ====================================================
+
+export interface userProfile_GetMyProfile_user {
+  __typename: "User";
+  profilePhoto: string | null;
+  firstName: string;
+  lastName: string;
+  email: string | null;
+  age: number | null;
+  fullName: string | null;
+  isDriving: boolean;
+}
+
+export interface userProfile_GetMyProfile {
+  __typename: "GetMyProfileResponse";
+  ok: boolean;
+  error: string | null;
+  user: userProfile_GetMyProfile_user | null;
+}
+
+export interface userProfile {
+  GetMyProfile: userProfile_GetMyProfile;
 }
 
 /* tslint:disable */
