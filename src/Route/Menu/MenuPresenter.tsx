@@ -104,6 +104,9 @@ const MenuPresenter: React.SFC<IProps> = ({
           <SLink to="/edit-account">
             <Span>내 프로필</Span>
           </SLink>
+          <SLink to="/account-settings">
+            <Span>프로필 설정</Span>
+          </SLink>
           <DriveBtn onClick={toggleDrivingFn} isDriving={user.isDriving}>
             {user.isDriving ? 'Stop Driving' : 'StartDriving'}
           </DriveBtn>
