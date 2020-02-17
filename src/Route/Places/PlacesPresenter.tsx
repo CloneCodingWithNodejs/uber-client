@@ -6,6 +6,7 @@ import styled from '../../typed-components';
 import BackgroundImage from '../../Components/BackgroundImageDiv';
 import Background from '../../static/mainBackGround.jpg';
 import Place from '../../Components/Place/index';
+import Header from '../../Components/Header';
 
 const Container = styled(BackgroundImage)`
   height: 100vh;
@@ -23,6 +24,10 @@ const MainDiv = styled.div`
   align-items: center;
   flex-direction: column;
   padding: 30px;
+
+  @media screen and (max-width: 600px) {
+    grid-column: 1 / span 6;
+  }
 `;
 
 const PlaceDiv = styled.div`
@@ -44,24 +49,27 @@ const PlacePresenter: React.SFC<IProps> = ({
   data: { GetMyPlaces: { places = null } = {} } = {} as any,
   loading
 }) => (
-  <Container>
-    <MainDiv>
-      <SLink to="/add-place">장소를 추가해보세요!</SLink>
-      <PlaceDiv>
-        {!loading &&
-          places &&
-          places.map((place) => (
-            <Place
-              id={place.id}
-              key={place.id}
-              fav={place.isFav}
-              name={place.name}
-              address={place.address}
-            />
-          ))}
-      </PlaceDiv>
-    </MainDiv>
-  </Container>
+  <>
+    <Header title="Places" backTo="/account-settings" />
+    <Container>
+      <MainDiv>
+        <SLink to="/add-place">장소를 추가해보세요!</SLink>
+        <PlaceDiv>
+          {!loading &&
+            places &&
+            places.map((place) => (
+              <Place
+                id={place.id}
+                key={place.id}
+                fav={place.isFav}
+                name={place.name}
+                address={place.address}
+              />
+            ))}
+        </PlaceDiv>
+      </MainDiv>
+    </Container>
+  </>
 );
 
 export default PlacePresenter;

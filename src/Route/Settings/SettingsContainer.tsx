@@ -5,8 +5,28 @@ import { LOG_USER_OUT } from '../../sharedQueries';
 import { USER_PROFILE, GET_PLACES } from '../../sharedQueries/sharedQueries2';
 import { userProfile, getPlaces } from '../../types/api';
 
-class SettgingsContainer extends React.Component {
+class SettgingsContainer extends React.Component<any, any> {
+  constructor(props) {
+    super(props);
+    this.state = {
+      index: 1
+    };
+  }
+
+  public nextPage = () => {
+    this.setState({
+      index: this.state.index + 7
+    });
+  };
+
+  public prePage = () => {
+    this.setState({
+      index: this.state.index - 7
+    });
+  };
+
   public render() {
+    const { index } = this.state;
     return (
       <Mutation mutation={LOG_USER_OUT}>
         {(logUserOut) => (
@@ -20,6 +40,9 @@ class SettgingsContainer extends React.Component {
                     userData={userData}
                     placesData={placesData}
                     placesLoading={placesLoading}
+                    currentPage={index}
+                    nextPage={this.nextPage}
+                    prePage={this.prePage}
                   />
                 )}
               </Query>

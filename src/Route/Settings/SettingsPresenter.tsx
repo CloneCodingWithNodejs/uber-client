@@ -29,9 +29,14 @@ const MainDiv = styled.div`
   flex-direction: column;
   padding: 40px;
 
-  @media screen and (max-width: 600px) {
+  @media screen and (max-width: 1000px) {
     width: 100%;
-    grid-column: 2 / span 4;
+    grid-column: 2 / span 3;
+  }
+
+  @media screen and (max-width: 800px) {
+    width: 100%;
+    grid-column: 1 / span 6;
   }
 `;
 
@@ -63,12 +68,40 @@ const SLink = styled(Link)`
   width: 100%;
 `;
 
+const NextBtn = styled.span`
+  margin-bottom: 20px;
+  cursor: pointer;
+`;
+
+const PreBtn = styled.span`
+  margin-right: 20px;
+  margin-bottom: 20px;
+  cursor: pointer;
+`;
+
+const PageDiv = styled.div`
+  display: flex;
+  justify-content: center;
+  align-content: center;
+`;
+
+const PlaceDiv = styled.div`
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  align-content: center;
+  flex-direction: column;
+`;
+
 interface IProps {
   onClick: any;
   userData?: userProfile;
   isLoading: boolean;
   placesData?: getPlaces;
   placesLoading: boolean;
+  currentPage: number;
+  nextPage: any;
+  prePage: any;
 }
 
 const SettingsPresenter: React.SFC<IProps> = ({
@@ -76,8 +109,12 @@ const SettingsPresenter: React.SFC<IProps> = ({
   userData: { GetMyProfile: { user = null } = {} } = {} as any,
   isLoading,
   placesData: { GetMyPlaces: { places = null } = {} } = {} as any,
-  placesLoading
+  placesLoading,
+  currentPage,
+  nextPage,
+  prePage
 }) => {
+  const limit = currentPage + 5;
   return (
     <>
       <Header title="Account Settings" backTo="/" />
@@ -96,17 +133,33 @@ const SettingsPresenter: React.SFC<IProps> = ({
               </UserDiv>
             </>
           )}
-          {!placesLoading &&
-            places &&
-            places.map((place) => (
-              <Place
-                key={place.id}
-                id={place.id}
-                fav={place.isFav}
-                name={place.name}
-                address={place.address}
-              />
-            ))}
+          <PlaceDiv>
+            {!placesLoading &&
+              places &&
+              places.map((place, index) => {
+                if (index <= limit && currentPage - 1 <= index) {
+                  return (
+                    <Place
+                      key={place.id}
+                      id={place.id}
+                      fav={place.isFav}
+                      name={place.name}
+                      address={place.address}
+                    />
+                  );
+                }
+                return false;
+              })}
+            <PageDiv>
+              {!placesLoading && currentPage !== 1 && (
+                <PreBtn onClick={prePage}>이전</PreBtn>
+              )}
+
+              {!placesLoading && places.length > limit && (
+                <NextBtn onClick={nextPage}>다음</NextBtn>
+              )}
+            </PageDiv>
+          </PlaceDiv>
           <Link to="/places">장소 추가하기</Link>
           <SLink to="/logout">
             <ExtendedBtn

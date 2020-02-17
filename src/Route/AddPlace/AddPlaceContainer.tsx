@@ -15,11 +15,14 @@ interface IState {
 class AddPlaceContainer extends React.Component<any, IState> {
   constructor(props) {
     super(props);
+
+    const { history: { location = {} } = {} } = this.props;
+
     this.state = {
       name: '',
-      address: '',
-      lat: 0,
-      lng: 0
+      address: location.address,
+      lat: location.lat,
+      lng: location.lng
     };
   }
 

@@ -21,6 +21,14 @@ const MainDiv = styled.div`
   grid-column: 3 / span 2;
   background: white;
   padding: 45px;
+
+  @media screen and (max-width: 1000px) {
+    grid-column: 2 / span 4;
+  }
+
+  @media screen and (max-width: 600px) {
+    grid-column: 1 / span 6;
+  }
 `;
 
 const ExtendedForm = styled(Form)``;
@@ -37,6 +45,7 @@ const ExtendedBtn = styled(Button)`
 
 const SLink = styled(Link)`
   text-decoration: underline;
+  cursor: pointer;
 `;
 
 interface IProps {
@@ -55,7 +64,7 @@ const AddPlacePresenter: React.SFC<IProps> = ({
   pickedAddress
 }) => (
   <>
-    <Header title="addPlace" backTo="/" />
+    <Header title="addPlace" backTo="/places" />
     <Container>
       <MainDiv>
         <ExtendedForm submitFn={submitFn}>
