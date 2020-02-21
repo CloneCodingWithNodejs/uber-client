@@ -19,3 +19,13 @@ export const FACEBOOK_CONNECT = gql`
     }
   }
 `;
+
+export const EMAIL_LOGIN = gql`
+  mutation emailSignIn($email: String!, $password: String!) {
+    EmailSignIn(email: $email, password: $password) {
+      ok
+      error
+      token
+    }
+  }
+`;

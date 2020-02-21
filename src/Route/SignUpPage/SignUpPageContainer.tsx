@@ -112,13 +112,19 @@ class SignUpPageContainer extends React.Component<any, any> {
 
   public onCompletedFn = (data, logUserInMutation) => {
     const { EmailSignUp } = data;
+    const { history } = this.props;
     if (EmailSignUp.ok && EmailSignUp.token) {
       toast.success('이제 이메일 인증을 해주세요!');
+
+      logUserInMutation({
+        variables: {
+          token: EmailSignUp.token
+        }
+      });
+
       setTimeout(() => {
-        logUserInMutation({
-          variables: {
-            token: EmailSignUp.token
-          }
+        history.push({
+          pathname: '/login'
         });
       }, 2000);
     }

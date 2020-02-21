@@ -5,6 +5,9 @@ import FacebookLogin from 'react-facebook-login';
 import styled from '../../typed-components';
 import Background from '../../static/socialLoginBG.jpg';
 import '../../static/css/facebookBtn.css';
+import Form from '../../Components/Form';
+import Input from '../../Components/Input';
+import Button from '../../Components/Button';
 
 const Container = styled.div`
   height: 100vh;
@@ -24,7 +27,6 @@ const MainDiv = styled.div`
 const SocialLoginForm = styled.div`
   width: 50%;
   height: 50%;
-  background-color: black;
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -82,17 +84,67 @@ const InnerSpan = styled.span`
 //   background-color: red;
 // `;
 
+const ExtendedForm = styled(Form)`
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  align-content: center;
+  flex-direction: column;
+`;
+
+const ExtendedInput = styled(Input)``;
+
+const ExtendedBtn = styled(Button)`
+  background: ${(props) => props.theme.blueColor};
+  margin-bottom: 60px;
+`;
+
+const HiddenInput = styled.input`
+  display: none;
+`;
+
 interface IProps {
   loginCallback: (fbData) => void;
+  onChange: any;
+  loginEmail: string;
+  password: string;
+  onClick: any;
 }
 
-const SocialLoginPresenter: React.SFC<IProps> = ({ loginCallback }) => (
+const SocialLoginPresenter: React.SFC<IProps> = ({
+  loginCallback,
+  loginEmail,
+  password,
+  onChange,
+  onClick
+}) => (
   <Container>
     <Helmet>
       <title>Social Login | Uber </title>
     </Helmet>
     <MainDiv>
       <SocialLoginForm className="form">
+        <ExtendedForm submitFn={onClick}>
+          <ExtendedInput
+            name="loginEmail"
+            onChange={onChange}
+            type="text"
+            required
+            placeholder="이메일"
+            value={loginEmail}
+          />
+          <ExtendedInput
+            onChange={onChange}
+            name="password"
+            type="password"
+            required
+            placeholder="비밀번호"
+            value={password}
+          />
+          <HiddenInput type="submit" />
+          <ExtendedBtn onClick={onClick} value="로그인" type="button" />
+        </ExtendedForm>
+
         <FacebookLogin
           textButton="Facebook으로 계속"
           appId="630076941159979"

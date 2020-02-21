@@ -6,6 +6,7 @@ import React from 'react';
 import styled from 'styled-components';
 import { Link } from 'react-router-dom';
 import { userProfile } from '../../types/api';
+import noImage from '../../static/no-image-icon.png';
 
 const MainDiv = styled.div`
   background: white;
@@ -91,12 +92,20 @@ const MenuPresenter: React.SFC<IProps> = ({
   toggleDrivingFn
 }) => (
   <MainDiv>
-    {!isLoading && user && user.profilePhoto && (
+    {!isLoading && user && (
       <>
-        <TopDiv>
-          <ProfileImg src={user.profilePhoto} />
-          <UserName>{user.fullName}</UserName>
-        </TopDiv>
+        {user.profilePhoto && (
+          <TopDiv>
+            <ProfileImg src={user.profilePhoto} />
+            <UserName>{user.fullName}</UserName>
+          </TopDiv>
+        )}
+        {user.profilePhoto === '' && (
+          <TopDiv>
+            <ProfileImg src={noImage} />
+            <UserName>{user.fullName}</UserName>
+          </TopDiv>
+        )}
         <MenuDiv>
           <SLink to="#">
             <Span>내 이용 기록</Span>

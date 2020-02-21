@@ -26,8 +26,11 @@ class VerifyEmailContainer extends React.Component<any, any> {
     const {
       CompleteEmailVerification: { ok, error }
     } = data;
+    const { history } = this.props;
     if (ok) {
       toast.success('이메일 인증 성공! 환영합니다!');
+
+      history.push({ pathname: '/' });
     }
     if (!ok && error === 'ALREADY_EXIST') {
       toast.error('이미 인증된 계정입니다');

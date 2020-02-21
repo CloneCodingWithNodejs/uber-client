@@ -4,8 +4,13 @@ import React from 'react';
 import { Mutation } from 'react-apollo';
 import { toast } from 'react-toastify';
 import SocialLoginPresenter from './SocialLoginPresenter';
-import { facebookConnect, facebookConnectVariables } from '../../types/api';
-import { FACEBOOK_CONNECT } from './SocialLoginQueries';
+import {
+  facebookConnect,
+  facebookConnectVariables,
+  emailSignIn,
+  emailSignInVariables
+} from '../../types/api';
+import { FACEBOOK_CONNECT, EMAIL_LOGIN } from './SocialLoginQueries';
 import { LOG_USER_IN } from '../../sharedQueries';
 
 interface IState {
@@ -13,17 +18,25 @@ interface IState {
   lastName: string;
   email?: string;
   fbId: string;
+  loginEmail?: any;
+  password?: any;
 }
 
 class SocialLoginContainer extends React.Component<any, IState> {
   public facebookMutation: any;
 
-  public stateData = {
-    email: '',
-    fbId: '',
-    firstName: '',
-    lastName: ''
-  };
+  constructor(props) {
+    super(props);
+
+    this.state = {
+      email: '',
+      fbId: '',
+      firstName: '',
+      lastName: '',
+      loginEmail: '',
+      password: ''
+    };
+  }
 
   public loginCallback = (fbData) => {
     const {
@@ -34,12 +47,12 @@ class SocialLoginContainer extends React.Component<any, IState> {
       accessToken
     } = fbData;
 
-    this.stateData = {
+    this.setState({
       email,
       fbId,
       firstName,
       lastName
-    };
+    });
 
     try {
       if (accessToken) {
@@ -74,7 +87,41 @@ class SocialLoginContainer extends React.Component<any, IState> {
     }
   };
 
+  public onChange = (event) => {
+    const {
+      target: { name, value }
+    } = event;
+
+    this.setState({
+      [name]: value
+    } as any);
+  };
+
+  public emailLoginComplete = (data, login) => {
+    const {
+      EmailSignIn: { ok, error, token }
+    } = data;
+
+    if (error) {
+      toast.error(error);
+      return;
+    }
+
+    if (ok && token) {
+      toast.success('로그인 성공!');
+
+      setTimeout(() => {
+        login({
+          variables: {
+            token
+          }
+        });
+      }, 2000);
+    }
+  };
+
   public render() {
+    const { loginEmail, password } = this.state;
     return (
       <Mutation mutation={LOG_USER_IN}>
         {(logUserInMutation) => (
@@ -84,12 +131,31 @@ class SocialLoginContainer extends React.Component<any, IState> {
               this.onCompleteFn(data, logUserInMutation);
             }}
           >
-            {(facebookMutation, { loading }) => {
-              this.facebookMutation = facebookMutation;
-              return (
-                <SocialLoginPresenter loginCallback={this.loginCallback} />
-              );
-            }}
+            {(facebookMutation, { loading }) => (
+              <Mutation<emailSignIn, emailSignInVariables>
+                mutation={EMAIL_LOGIN}
+                variables={{
+                  email: loginEmail,
+                  password
+                }}
+                onCompleted={(data) => {
+                  this.emailLoginComplete(data, logUserInMutation);
+                }}
+              >
+                {(emailLoginMutation) => {
+                  this.facebookMutation = facebookMutation;
+                  return (
+                    <SocialLoginPresenter
+                      loginEmail={loginEmail}
+                      password={password}
+                      loginCallback={this.loginCallback}
+                      onChange={this.onChange}
+                      onClick={emailLoginMutation}
+                    />
+                  );
+                }}
+              </Mutation>
+            )}
           </Mutation>
         )}
       </Mutation>
