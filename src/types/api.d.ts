@@ -1,6 +1,5 @@
 /* tslint:disable */
 /* eslint-disable */
-// @generated
 // This file was automatically generated and should not be edited.
 
 // ====================================================
@@ -27,7 +26,6 @@ export interface addPlaceVariables {
 
 /* tslint:disable */
 /* eslint-disable */
-// @generated
 // This file was automatically generated and should not be edited.
 
 // ====================================================
@@ -53,7 +51,6 @@ export interface editProfileVariables {
 
 /* tslint:disable */
 /* eslint-disable */
-// @generated
 // This file was automatically generated and should not be edited.
 
 // ====================================================
@@ -83,7 +80,6 @@ export interface emailSignUpVariables {
 
 /* tslint:disable */
 /* eslint-disable */
-// @generated
 // This file was automatically generated and should not be edited.
 
 // ====================================================
@@ -106,7 +102,31 @@ export interface reportLocationVariables {
 
 /* tslint:disable */
 /* eslint-disable */
-// @generated
+// This file was automatically generated and should not be edited.
+
+// ====================================================
+// GraphQL query operation: getDrivers
+// ====================================================
+
+export interface getDrivers_GetNearByDrivers_drivers {
+  __typename: "User";
+  id: number;
+  lastLat: number | null;
+  lastLng: number | null;
+}
+
+export interface getDrivers_GetNearByDrivers {
+  __typename: "GetNearByDriversResponse";
+  ok: boolean;
+  drivers: (getDrivers_GetNearByDrivers_drivers | null)[] | null;
+}
+
+export interface getDrivers {
+  GetNearByDrivers: getDrivers_GetNearByDrivers;
+}
+
+/* tslint:disable */
+/* eslint-disable */
 // This file was automatically generated and should not be edited.
 
 // ====================================================
@@ -125,7 +145,6 @@ export interface toggleDriving {
 
 /* tslint:disable */
 /* eslint-disable */
-// @generated
 // This file was automatically generated and should not be edited.
 
 // ====================================================
@@ -148,7 +167,6 @@ export interface startPhoneVerificationVariables {
 
 /* tslint:disable */
 /* eslint-disable */
-// @generated
 // This file was automatically generated and should not be edited.
 
 // ====================================================
@@ -172,7 +190,6 @@ export interface editplaceVariables {
 
 /* tslint:disable */
 /* eslint-disable */
-// @generated
 // This file was automatically generated and should not be edited.
 
 // ====================================================
@@ -203,7 +220,6 @@ export interface signUpVariables {
 
 /* tslint:disable */
 /* eslint-disable */
-// @generated
 // This file was automatically generated and should not be edited.
 
 // ====================================================
@@ -230,7 +246,6 @@ export interface facebookConnectVariables {
 
 /* tslint:disable */
 /* eslint-disable */
-// @generated
 // This file was automatically generated and should not be edited.
 
 // ====================================================
@@ -255,7 +270,6 @@ export interface emailSignInVariables {
 
 /* tslint:disable */
 /* eslint-disable */
-// @generated
 // This file was automatically generated and should not be edited.
 
 // ====================================================
@@ -278,7 +292,6 @@ export interface completeEmailVerificationVariables {
 
 /* tslint:disable */
 /* eslint-disable */
-// @generated
 // This file was automatically generated and should not be edited.
 
 // ====================================================
@@ -303,7 +316,6 @@ export interface verifyPhoneVariables {
 
 /* tslint:disable */
 /* eslint-disable */
-// @generated
 // This file was automatically generated and should not be edited.
 
 // ====================================================
@@ -334,7 +346,6 @@ export interface userProfile {
 
 /* tslint:disable */
 /* eslint-disable */
-// @generated
 // This file was automatically generated and should not be edited.
 
 // ====================================================
@@ -362,7 +373,6 @@ export interface getPlaces {
 
 /* tslint:disable */
 /* eslint-disable */
-// @generated
 // This file was automatically generated and should not be edited.
 
 //==============================================================

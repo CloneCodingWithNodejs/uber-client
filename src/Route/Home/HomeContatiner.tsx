@@ -10,12 +10,14 @@ import { USER_PROFILE } from '../../sharedQueries/sharedQueries2';
 import {
   userProfile,
   reportLocation,
-  reportLocationVariables
+  reportLocationVariables,
+  getDrivers
 } from '../../types/api';
 import { geoCode } from '../../mapHelpers';
 import startFlag from '../../static/startFlag.png';
+import car from '../../static/car.png';
 import { toast } from 'react-toastify';
-import { REPORT_LOCATION } from './HomeQueries';
+import { REPORT_LOCATION, GET_NEARBY_DRIVERS } from './HomeQueries';
 
 interface IState {
   isMenuOpen: boolean;
@@ -40,6 +42,8 @@ class HomeContatiner extends React.Component<any, IState> {
   toMarker!: google.maps.Marker;
 
   directions!: google.maps.DirectionsRenderer;
+
+  drivers: google.maps.Marker[] = [];
 
   constructor(props) {
     super(props);
@@ -256,24 +260,71 @@ class HomeContatiner extends React.Component<any, IState> {
     });
   };
 
+  public handleNearbyDrivers = (data) => {
+    const {
+      GetNearByDrivers: { ok, drivers }
+    } = data;
+
+    console.log(data);
+
+    if (ok && drivers) {
+      drivers.forEach((driver) => {
+        const markerOptions: google.maps.MarkerOptions = {
+          position: {
+            lat: driver.lastLat,
+            lng: driver.lastLng
+          },
+          icon: {
+            url: car,
+            scaledSize: new google.maps.Size(50, 50)
+          }
+        };
+
+        const newMarker: google.maps.Marker = new google.maps.Marker(
+          markerOptions
+        );
+
+        //마커에 아이디를 지정함 .set(키,밸류)
+        newMarker.set('id', driver.id);
+        newMarker.setMap(this.map);
+        this.drivers.push(newMarker);
+      });
+    }
+  };
+
   public render() {
     const { isMenuOpen, toAddress, price } = this.state;
     return (
       <Query<userProfile> query={USER_PROFILE}>
         {({ data, loading }) => {
           return (
-            <HomePresenter
-              isMenuOpen={isMenuOpen}
-              toggleMenu={this.toggleMenu}
-              isLoading={loading}
-              mapRef={this.mapRef}
-              toAddress={toAddress}
-              onChange={this.onChange}
-              pressEnter={this.pressEnter}
-              onClick={this.onClick}
-              price={price}
-              userData={data}
-            />
+            <Query<getDrivers>
+              query={GET_NEARBY_DRIVERS}
+              pollInterval={1000}
+              skip={
+                (data &&
+                  data.GetMyProfile &&
+                  data.GetMyProfile.user &&
+                  data.GetMyProfile.user.isDriving) ||
+                false
+              }
+              onCompleted={this.handleNearbyDrivers}
+            >
+              {() => (
+                <HomePresenter
+                  isMenuOpen={isMenuOpen}
+                  toggleMenu={this.toggleMenu}
+                  isLoading={loading}
+                  mapRef={this.mapRef}
+                  toAddress={toAddress}
+                  onChange={this.onChange}
+                  pressEnter={this.pressEnter}
+                  onClick={this.onClick}
+                  price={price}
+                  userData={data}
+                />
+              )}
+            </Query>
           );
         }}
       </Query>
