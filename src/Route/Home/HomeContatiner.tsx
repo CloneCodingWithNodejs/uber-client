@@ -260,34 +260,62 @@ class HomeContatiner extends React.Component<any, IState> {
     });
   };
 
-  public handleNearbyDrivers = (data) => {
+  public handleNearbyDrivers = (data: getDrivers) => {
     const {
       GetNearByDrivers: { ok, drivers }
     } = data;
 
-    console.log(data);
-
     if (ok && drivers) {
       drivers.forEach((driver) => {
-        const markerOptions: google.maps.MarkerOptions = {
-          position: {
-            lat: driver.lastLat,
-            lng: driver.lastLng
-          },
-          icon: {
-            url: car,
-            scaledSize: new google.maps.Size(50, 50)
+        if (driver) {
+          const existingDriver:
+            | google.maps.Marker
+            | undefined = this.drivers.find(
+            (driverMarker: google.maps.Marker) => {
+              const markerID = driverMarker.get('id');
+              return markerID === driver.id;
+            }
+          );
+          //이미 존재한다면 마커를 수정
+          if (existingDriver) {
+            if (driver.lastLat && driver.lastLng) {
+              existingDriver.setPosition({
+                lat: driver.lastLat,
+                lng: driver.lastLng
+              });
+
+              // 이거 빼먹으면 안됨
+              existingDriver.setMap(this.map);
+            } else {
+              console.log('drvier.lastLng or LastLat is null');
+            }
+            // 그렇지않다면 마커를 새로생성함
+          } else {
+            if (driver.lastLat && driver.lastLng) {
+              const markerOptions: google.maps.MarkerOptions = {
+                position: {
+                  lat: driver.lastLat,
+                  lng: driver.lastLng
+                },
+                icon: {
+                  url: car,
+                  scaledSize: new google.maps.Size(50, 50)
+                }
+              };
+
+              const newMarker: google.maps.Marker = new google.maps.Marker(
+                markerOptions
+              );
+
+              //마커에 아이디를 지정함 .set(키,밸류)
+              newMarker.set('id', driver.id);
+              newMarker.setMap(this.map);
+              this.drivers.push(newMarker);
+            } else {
+              console.log('drvier.lastLng or LastLat is null');
+            }
           }
-        };
-
-        const newMarker: google.maps.Marker = new google.maps.Marker(
-          markerOptions
-        );
-
-        //마커에 아이디를 지정함 .set(키,밸류)
-        newMarker.set('id', driver.id);
-        newMarker.setMap(this.map);
-        this.drivers.push(newMarker);
+        }
       });
     }
   };
@@ -299,6 +327,7 @@ class HomeContatiner extends React.Component<any, IState> {
         {({ data, loading }) => {
           return (
             <Query<getDrivers>
+              fetchPolicy="cache-and-network"
               query={GET_NEARBY_DRIVERS}
               pollInterval={1000}
               skip={
