@@ -4,20 +4,31 @@
 /* eslint-disable react/no-access-state-in-setstate */
 /* eslint-disable react/destructuring-assignment */
 import React from 'react';
-import { Query, graphql } from 'react-apollo';
+import { Query, graphql, Mutation } from 'react-apollo';
 import HomePresenter from './HomePresenter';
 import { USER_PROFILE } from '../../sharedQueries/sharedQueries2';
 import {
   userProfile,
   reportLocation,
   reportLocationVariables,
-  getDrivers
+  getDrivers,
+  requestRide,
+  requestRideVariables,
+  acceptRide
 } from '../../types/api';
-import { geoCode } from '../../mapHelpers';
+import { geoCode, reverseGeoCode } from '../../mapHelpers';
 import startFlag from '../../static/startFlag.png';
 import car from '../../static/car.png';
 import { toast } from 'react-toastify';
-import { REPORT_LOCATION, GET_NEARBY_DRIVERS } from './HomeQueries';
+import {
+  REPORT_LOCATION,
+  GET_NEARBY_DRIVERS,
+  REQUEST_RIDE,
+  GET_NEARBY_RIDE,
+  ACCEPT_RIDE,
+  SUBSCRIBE_NEARBY_RIDES
+} from './HomeQueries';
+import { SubscribeToMoreOptions } from 'apollo-client';
 
 interface IState {
   isMenuOpen: boolean;
@@ -30,6 +41,8 @@ interface IState {
   distance: string;
   duration: string;
   price: string;
+  fromAddress: string;
+  isDriving: boolean;
 }
 
 class HomeContatiner extends React.Component<any, IState> {
@@ -60,13 +73,25 @@ class HomeContatiner extends React.Component<any, IState> {
       toAddress: '',
       distance: '',
       duration: '',
-      price: ''
+      price: '',
+      fromAddress: '',
+      isDriving: false
     };
   }
 
   componentDidMount() {
     navigator.geolocation.getCurrentPosition(this.handleGeoSuccess);
   }
+
+  public getFromAddress = async (lat: number, lng: number) => {
+    const address = await reverseGeoCode(lat, lng);
+
+    if (address) {
+      this.setState({
+        fromAddress: address
+      });
+    }
+  };
 
   public handleGeoSuccess = async (position) => {
     const {
@@ -105,6 +130,7 @@ class HomeContatiner extends React.Component<any, IState> {
         'https://developers.google.com/maps/documentation/javascript/examples/full/images/beachflag.png'
     };
 
+    this.getFromAddress(lat, lng);
     this.userMarker = new google.maps.Marker(userMarkerOpitons);
     this.userMarker.setMap(this.map);
     const watchOptions: PositionOptions = {
@@ -255,8 +281,16 @@ class HomeContatiner extends React.Component<any, IState> {
   public setPrice = () => {
     const { distance } = this.state;
 
+    let setPrice = Number(
+      parseFloat(distance.replace('.', ',')) * 3000
+    ).toFixed(2);
+
+    if (setPrice === '0.00') {
+      setPrice = '1000.00';
+    }
+
     this.setState({
-      price: Number(parseFloat(distance.replace('.', ',')) * 3000).toFixed(2)
+      price: setPrice
     });
   };
 
@@ -320,43 +354,122 @@ class HomeContatiner extends React.Component<any, IState> {
     }
   };
 
+  public handleRequestRide = (data: requestRide) => {
+    if (data.RequestRide.ok) {
+      toast.success('Uber 요청 성공!!');
+    }
+    if (data.RequestRide.error) toast.error(data.RequestRide.error);
+  };
+
+  public handleProfileQuery = (data: userProfile) => {
+    const {
+      GetMyProfile: { user }
+    } = data;
+
+    if (user) {
+      const { isDriving } = user;
+      if (isDriving) {
+        this.setState({
+          isDriving
+        });
+      }
+    }
+  };
+
+  public handleSubscriptionUpdate = (data) => {
+    console.log(data);
+  };
+
   public render() {
-    const { isMenuOpen, toAddress, price } = this.state;
+    const {
+      isMenuOpen,
+      toAddress,
+      price,
+      distance,
+      fromAddress,
+      lat,
+      lng,
+      toLat,
+      toLng,
+      duration,
+      isDriving
+    } = this.state;
     return (
-      <Query<userProfile> query={USER_PROFILE}>
-        {({ data, loading }) => {
-          return (
-            <Query<getDrivers>
-              fetchPolicy="cache-and-network"
-              query={GET_NEARBY_DRIVERS}
-              pollInterval={1000}
-              skip={
-                (data &&
-                  data.GetMyProfile &&
-                  data.GetMyProfile.user &&
-                  data.GetMyProfile.user.isDriving) ||
-                false
-              }
-              onCompleted={this.handleNearbyDrivers}
-            >
-              {() => (
-                <HomePresenter
-                  isMenuOpen={isMenuOpen}
-                  toggleMenu={this.toggleMenu}
-                  isLoading={loading}
-                  mapRef={this.mapRef}
-                  toAddress={toAddress}
-                  onChange={this.onChange}
-                  pressEnter={this.pressEnter}
-                  onClick={this.onClick}
-                  price={price}
-                  userData={data}
-                />
-              )}
-            </Query>
-          );
+      <Mutation<requestRide, requestRideVariables>
+        mutation={REQUEST_RIDE}
+        variables={{
+          distance,
+          pickUpAddress: fromAddress,
+          pickUpLat: lat,
+          pickUpLng: lng,
+          price: Number(price),
+          duration,
+          dropOffLat: toLat,
+          dropOffLng: toLng,
+          dropOffAddress: toAddress
         }}
-      </Query>
+        onCompleted={this.handleRequestRide}
+      >
+        {(requestRideMutation, { loading }) => (
+          <Query<userProfile> query={USER_PROFILE}>
+            {({ data, loading }) => {
+              return (
+                <Query<getDrivers>
+                  fetchPolicy="cache-and-network"
+                  query={GET_NEARBY_DRIVERS}
+                  pollInterval={1000}
+                  skip={isDriving}
+                  onCompleted={this.handleNearbyDrivers}
+                >
+                  {() => {
+                    return (
+                      <Query query={GET_NEARBY_RIDE} skip={!isDriving}>
+                        {({ subscribeToMore, data: getNearbyRide }) => {
+                          const rideSubscriptionOptions: SubscribeToMoreOptions = {
+                            document: SUBSCRIBE_NEARBY_RIDES,
+                            updateQuery: this.handleSubscriptionUpdate
+                          };
+                          subscribeToMore(rideSubscriptionOptions);
+                          return (
+                            <Mutation
+                              mutation={ACCEPT_RIDE}
+                              onCompleted={(data: acceptRide) => {
+                                if (data.UpdateRideStatus.ok) {
+                                  toast.success('탑승 요청 승인 성공!!');
+                                } else {
+                                  toast.error(data.UpdateRideStatus.error);
+                                }
+                              }}
+                            >
+                              {(acceptRideFn) => (
+                                <HomePresenter
+                                  isMenuOpen={isMenuOpen}
+                                  toggleMenu={this.toggleMenu}
+                                  isLoading={loading}
+                                  mapRef={this.mapRef}
+                                  toAddress={toAddress}
+                                  onChange={this.onChange}
+                                  pressEnter={this.pressEnter}
+                                  onClick={this.onClick}
+                                  price={price}
+                                  userData={data}
+                                  requestRideMutation={requestRideMutation}
+                                  nearbyRide={getNearbyRide}
+                                  acceptRideFn={acceptRideFn}
+                                />
+                              )}
+                            </Mutation>
+                          );
+                        }}
+                      </Query>
+                    );
+                  }}
+                </Query>
+              );
+            }}
+          </Query>
+        )}
+      </Mutation>
     );
   }
 }

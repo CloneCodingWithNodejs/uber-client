@@ -1,5 +1,6 @@
 /* tslint:disable */
 /* eslint-disable */
+// @generated
 // This file was automatically generated and should not be edited.
 
 // ====================================================
@@ -26,6 +27,7 @@ export interface addPlaceVariables {
 
 /* tslint:disable */
 /* eslint-disable */
+// @generated
 // This file was automatically generated and should not be edited.
 
 // ====================================================
@@ -51,6 +53,7 @@ export interface editProfileVariables {
 
 /* tslint:disable */
 /* eslint-disable */
+// @generated
 // This file was automatically generated and should not be edited.
 
 // ====================================================
@@ -80,6 +83,7 @@ export interface emailSignUpVariables {
 
 /* tslint:disable */
 /* eslint-disable */
+// @generated
 // This file was automatically generated and should not be edited.
 
 // ====================================================
@@ -102,6 +106,7 @@ export interface reportLocationVariables {
 
 /* tslint:disable */
 /* eslint-disable */
+// @generated
 // This file was automatically generated and should not be edited.
 
 // ====================================================
@@ -127,6 +132,132 @@ export interface getDrivers {
 
 /* tslint:disable */
 /* eslint-disable */
+// @generated
+// This file was automatically generated and should not be edited.
+
+// ====================================================
+// GraphQL mutation operation: requestRide
+// ====================================================
+
+export interface requestRide_RequestRide_ride {
+  __typename: "Ride";
+  id: number;
+}
+
+export interface requestRide_RequestRide {
+  __typename: "RequestRideResponse";
+  ok: boolean;
+  error: string | null;
+  ride: requestRide_RequestRide_ride | null;
+}
+
+export interface requestRide {
+  RequestRide: requestRide_RequestRide;
+}
+
+export interface requestRideVariables {
+  pickUpAddress: string;
+  pickUpLat: number;
+  pickUpLng: number;
+  dropOffAddress: string;
+  dropOffLat: number;
+  dropOffLng: number;
+  price: number;
+  distance: string;
+  duration: string;
+}
+
+/* tslint:disable */
+/* eslint-disable */
+// @generated
+// This file was automatically generated and should not be edited.
+
+// ====================================================
+// GraphQL query operation: getRides
+// ====================================================
+
+export interface getRides_GetNearbyRide_ride_passenger {
+  __typename: "User";
+  fullName: string | null;
+  profilePhoto: string | null;
+}
+
+export interface getRides_GetNearbyRide_ride {
+  __typename: "Ride";
+  id: number;
+  pickUpAddress: string;
+  dropOffAddress: string;
+  price: number;
+  distance: string;
+  passenger: getRides_GetNearbyRide_ride_passenger;
+}
+
+export interface getRides_GetNearbyRide {
+  __typename: "GetNearbyRideResponse";
+  ok: boolean;
+  error: string | null;
+  ride: getRides_GetNearbyRide_ride | null;
+}
+
+export interface getRides {
+  GetNearbyRide: getRides_GetNearbyRide;
+}
+
+/* tslint:disable */
+/* eslint-disable */
+// @generated
+// This file was automatically generated and should not be edited.
+
+// ====================================================
+// GraphQL mutation operation: acceptRide
+// ====================================================
+
+export interface acceptRide_UpdateRideStatus {
+  __typename: "UpdateRideStatusResponse";
+  ok: boolean;
+  error: string | null;
+}
+
+export interface acceptRide {
+  UpdateRideStatus: acceptRide_UpdateRideStatus;
+}
+
+export interface acceptRideVariables {
+  rideId: number;
+}
+
+/* tslint:disable */
+/* eslint-disable */
+// @generated
+// This file was automatically generated and should not be edited.
+
+// ====================================================
+// GraphQL subscription operation: nearbyRides
+// ====================================================
+
+export interface nearbyRides_NearbyRideSubscription_passenger {
+  __typename: "User";
+  fullName: string | null;
+  profilePhoto: string | null;
+}
+
+export interface nearbyRides_NearbyRideSubscription {
+  __typename: "Ride";
+  id: number;
+  pickUpAddress: string;
+  dropOffAddress: string;
+  price: number;
+  distance: string;
+  passenger: nearbyRides_NearbyRideSubscription_passenger;
+}
+
+export interface nearbyRides {
+  NearbyRideSubscription: nearbyRides_NearbyRideSubscription;
+}
+
+/* tslint:disable */
+/* eslint-disable */
+// @generated
 // This file was automatically generated and should not be edited.
 
 // ====================================================
@@ -145,6 +276,7 @@ export interface toggleDriving {
 
 /* tslint:disable */
 /* eslint-disable */
+// @generated
 // This file was automatically generated and should not be edited.
 
 // ====================================================
@@ -167,6 +299,7 @@ export interface startPhoneVerificationVariables {
 
 /* tslint:disable */
 /* eslint-disable */
+// @generated
 // This file was automatically generated and should not be edited.
 
 // ====================================================
@@ -190,6 +323,7 @@ export interface editplaceVariables {
 
 /* tslint:disable */
 /* eslint-disable */
+// @generated
 // This file was automatically generated and should not be edited.
 
 // ====================================================
@@ -220,6 +354,7 @@ export interface signUpVariables {
 
 /* tslint:disable */
 /* eslint-disable */
+// @generated
 // This file was automatically generated and should not be edited.
 
 // ====================================================
@@ -246,6 +381,7 @@ export interface facebookConnectVariables {
 
 /* tslint:disable */
 /* eslint-disable */
+// @generated
 // This file was automatically generated and should not be edited.
 
 // ====================================================
@@ -270,6 +406,7 @@ export interface emailSignInVariables {
 
 /* tslint:disable */
 /* eslint-disable */
+// @generated
 // This file was automatically generated and should not be edited.
 
 // ====================================================
@@ -292,6 +429,7 @@ export interface completeEmailVerificationVariables {
 
 /* tslint:disable */
 /* eslint-disable */
+// @generated
 // This file was automatically generated and should not be edited.
 
 // ====================================================
@@ -316,6 +454,7 @@ export interface verifyPhoneVariables {
 
 /* tslint:disable */
 /* eslint-disable */
+// @generated
 // This file was automatically generated and should not be edited.
 
 // ====================================================
@@ -346,6 +485,7 @@ export interface userProfile {
 
 /* tslint:disable */
 /* eslint-disable */
+// @generated
 // This file was automatically generated and should not be edited.
 
 // ====================================================
@@ -373,6 +513,7 @@ export interface getPlaces {
 
 /* tslint:disable */
 /* eslint-disable */
+// @generated
 // This file was automatically generated and should not be edited.
 
 //==============================================================

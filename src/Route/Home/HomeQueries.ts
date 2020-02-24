@@ -26,7 +26,7 @@ export const REQUEST_RIDE = gql`
     $pickUpAddress: String!
     $pickUpLat: Float!
     $pickUpLng: Float!
-    $droppOffAddress: String!
+    $dropOffAddress: String!
     $dropOffLat: Float!
     $dropOffLng: Float!
     $price: Float!
@@ -37,7 +37,7 @@ export const REQUEST_RIDE = gql`
       pickUpAddress: $pickUpAddress
       pickUpLat: $pickUpLat
       pickUpLng: $pickUpLng
-      droppOffAddress: $droppOffAddress
+      dropOffAddress: $dropOffAddress
       dropOffLat: $dropOffLat
       dropOffLng: $dropOffLng
       price: $price
@@ -48,6 +48,51 @@ export const REQUEST_RIDE = gql`
       error
       ride {
         id
+      }
+    }
+  }
+`;
+
+export const GET_NEARBY_RIDE = gql`
+  query getRides {
+    GetNearbyRide {
+      ok
+      error
+      ride {
+        id
+        pickUpAddress
+        dropOffAddress
+        price
+        distance
+        passenger {
+          fullName
+          profilePhoto
+        }
+      }
+    }
+  }
+`;
+
+export const ACCEPT_RIDE = gql`
+  mutation acceptRide($rideId: Int!) {
+    UpdateRideStatus(rideId: $rideId, status: ACCEPTED) {
+      ok
+      error
+    }
+  }
+`;
+
+export const SUBSCRIBE_NEARBY_RIDES = gql`
+  subscription nearbyRides {
+    NearbyRideSubscription {
+      id
+      pickUpAddress
+      dropOffAddress
+      price
+      distance
+      passenger {
+        fullName
+        profilePhoto
       }
     }
   }

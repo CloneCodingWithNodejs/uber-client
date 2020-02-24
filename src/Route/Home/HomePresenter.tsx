@@ -10,7 +10,15 @@ import Menu from '../../Route/Menu/index';
 import AddressBar from '../../Components/AddressBar';
 import Button from '../../Components/Button';
 import '../../static/css/sidebar.css';
-import { userProfile } from '../../types/api';
+import {
+  userProfile,
+  requestRide,
+  requestRideVariables,
+  getRides
+} from '../../types/api';
+import { MutationFunction } from 'react-apollo';
+import RidePopUp from '../../Components/RidePopUp/RidePopUp';
+import noImage from '../../static/no-image-icon.png';
 
 const Container = styled.div``;
 
@@ -79,6 +87,9 @@ interface IProps {
   onClick: any;
   price: string;
   userData?: userProfile;
+  requestRideMutation: MutationFunction<requestRide, requestRideVariables>;
+  nearbyRide?: getRides;
+  acceptRideFn?: any;
 }
 
 const HomePresenter: React.SFC<IProps> = ({
@@ -91,60 +102,81 @@ const HomePresenter: React.SFC<IProps> = ({
   pressEnter,
   onClick,
   price,
-  userData: { GetMyProfile: { user = null } = {} } = {}
+  userData: { GetMyProfile: { user = null } = {} } = {},
+  requestRideMutation,
+  nearbyRide: { GetNearbyRide: { ride = null } = {} } = {},
+  acceptRideFn
 }) => (
-  <Container>
-    <Helmet>
-      <title>Home | uber</title>
-    </Helmet>
-    {user && !user.isDriving && (
-      <AddressBar
-        name="toAddress"
-        onBlur={() => {
-          console.log('hi');
-        }}
-        onChange={onChange}
-        pressEnter={pressEnter}
-        value={toAddress}
-      />
-    )}
-
-    <Sidebar
-      sidebar={<Menu />}
-      open={isMenuOpen}
-      onSetOpen={toggleMenu}
-      styles={{
-        sidebar: {
-          width: '40%',
-          zIndex: '10',
-          backgroundColor: 'white'
+  <>
+    {ride && (
+      <RidePopUp
+        id={ride.id}
+        acceptRideFn={acceptRideFn}
+        distance={ride.distance}
+        dropOffAddress={ride.dropOffAddress}
+        passengerName={ride.passenger.fullName!}
+        passengerPhoto={
+          ride.passenger.profilePhoto === ''
+            ? noImage
+            : ride.passenger.profilePhoto!
         }
-      }}
-      sidebarId="customSidebar"
-    >
-      {!isLoading && (
-        <SButton isMenuOpen={isMenuOpen} onClick={toggleMenu}>
-          |||
-        </SButton>
+        pickUpAddress={ride.pickUpAddress}
+        price={ride.price}
+      />
+    )}
+    <Container>
+      <Helmet>
+        <title>Home | uber</title>
+      </Helmet>
+      {user && !user.isDriving && (
+        <AddressBar
+          name="toAddress"
+          onBlur={() => {
+            console.log('hi');
+          }}
+          onChange={onChange}
+          pressEnter={pressEnter}
+          value={toAddress}
+        />
       )}
-    </Sidebar>
-    <Map ref={mapRef} />
-    {price && (
-      <ExtendedBtn
-        onClick={onClick}
-        type="button"
-        value={`비용 : ${price}원 UBER 요청하기`}
-        className="style"
-      />
-    )}
-    {user && !user.isDriving && (
-      <ExtendedBtnBottom
-        onClick={onClick}
-        type="button"
-        value="도착 장소 선택하기"
-      />
-    )}
-  </Container>
+
+      <Sidebar
+        sidebar={<Menu />}
+        open={isMenuOpen}
+        onSetOpen={toggleMenu}
+        styles={{
+          sidebar: {
+            width: '40%',
+            zIndex: '10',
+            backgroundColor: 'white'
+          }
+        }}
+        sidebarId="customSidebar"
+      >
+        {!isLoading && (
+          <SButton isMenuOpen={isMenuOpen} onClick={toggleMenu}>
+            |||
+          </SButton>
+        )}
+      </Sidebar>
+      <Map ref={mapRef} />
+      {price && (
+        <ExtendedBtn
+          onClick={requestRideMutation}
+          type="button"
+          value={`비용 : ${price}원 UBER 요청하기`}
+          className="style"
+        />
+      )}
+      {user && !user.isDriving && (
+        <ExtendedBtnBottom
+          onClick={onClick}
+          type="button"
+          value={toAddress === '' ? '도착 장소 선택하기' : '도착 장소 변경하기'}
+        />
+      )}
+    </Container>
+  </>
 );
 
 export default HomePresenter;
