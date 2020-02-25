@@ -20,6 +20,7 @@ import EmailSignUp from '../../Route/EmailSignUp/index';
 import VerifyEmail from '../../Route/VerifyEmail/index';
 import Home from '../../Route/Home/index';
 import AccountSettings from '../../Route/Settings/index';
+import Chat from '../../Route/Chat/index';
 
 interface Iprops {
   isLoggedIn: boolean;
@@ -49,7 +50,7 @@ const LoggedInRoutes: React.SFC = () => (
   <Switch>
     <Route path="/" exact component={Home} />
     <Route path="/login" exact component={Login} />
-    <Route path="/ride" exact component={Ride} />
+    <Route path="/ride/:rideId" exact component={Ride} />
     <Route path="/edit-account" exact component={EditAccount} />
     <Route path="/settings" exact component={Settings} />
     <Route path="/places" exact component={Places} />
@@ -57,6 +58,7 @@ const LoggedInRoutes: React.SFC = () => (
     <Route path="/find-address" exact component={FindAddress} />
     <Route path="/verify-email/:id" exact component={VerifyEmail} />
     <Route path="/account-settings" exact component={AccountSettings} />
+    <Route path="/chat/:chatId" exact component={Chat} />
     <Redirect from="*" to="/" />
   </Switch>
 );

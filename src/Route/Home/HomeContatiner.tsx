@@ -355,8 +355,12 @@ class HomeContatiner extends React.Component<any, IState> {
   };
 
   public handleRequestRide = (data: requestRide) => {
+    const { history } = this.props;
     if (data.RequestRide.ok) {
       toast.success('Uber 요청 성공!!');
+      history.push({
+        pathname: `/ride/${data.RequestRide.ride!.id}`
+      });
     }
     if (data.RequestRide.error) toast.error(data.RequestRide.error);
   };
@@ -376,10 +380,6 @@ class HomeContatiner extends React.Component<any, IState> {
     }
   };
 
-  public handleSubscriptionUpdate = (data) => {
-    console.log(data);
-  };
-
   public render() {
     const {
       isMenuOpen,
@@ -395,81 +395,105 @@ class HomeContatiner extends React.Component<any, IState> {
       isDriving
     } = this.state;
     return (
-      <Mutation<requestRide, requestRideVariables>
-        mutation={REQUEST_RIDE}
-        variables={{
-          distance,
-          pickUpAddress: fromAddress,
-          pickUpLat: lat,
-          pickUpLng: lng,
-          price: Number(price),
-          duration,
-          dropOffLat: toLat,
-          dropOffLng: toLng,
-          dropOffAddress: toAddress
-        }}
-        onCompleted={this.handleRequestRide}
+      <Query<userProfile>
+        query={USER_PROFILE}
+        onCompleted={this.handleProfileQuery}
       >
-        {(requestRideMutation, { loading }) => (
-          <Query<userProfile> query={USER_PROFILE}>
-            {({ data, loading }) => {
-              return (
-                <Query<getDrivers>
-                  fetchPolicy="cache-and-network"
-                  query={GET_NEARBY_DRIVERS}
-                  pollInterval={1000}
-                  skip={isDriving}
-                  onCompleted={this.handleNearbyDrivers}
-                >
-                  {() => {
-                    return (
-                      <Query query={GET_NEARBY_RIDE} skip={!isDriving}>
-                        {({ subscribeToMore, data: getNearbyRide }) => {
-                          const rideSubscriptionOptions: SubscribeToMoreOptions = {
-                            document: SUBSCRIBE_NEARBY_RIDES,
-                            updateQuery: this.handleSubscriptionUpdate
-                          };
-                          subscribeToMore(rideSubscriptionOptions);
-                          return (
-                            <Mutation
-                              mutation={ACCEPT_RIDE}
-                              onCompleted={(data: acceptRide) => {
-                                if (data.UpdateRideStatus.ok) {
-                                  toast.success('탑승 요청 승인 성공!!');
-                                } else {
-                                  toast.error(data.UpdateRideStatus.error);
+        {({ data, loading }) => {
+          return (
+            <Mutation<requestRide, requestRideVariables>
+              mutation={REQUEST_RIDE}
+              variables={{
+                distance,
+                pickUpAddress: fromAddress,
+                pickUpLat: lat,
+                pickUpLng: lng,
+                price: Number(price),
+                duration,
+                dropOffLat: toLat,
+                dropOffLng: toLng,
+                dropOffAddress: toAddress
+              }}
+              onCompleted={this.handleRequestRide}
+            >
+              {(rideMutation) => {
+                return (
+                  <Query<getDrivers>
+                    fetchPolicy="cache-and-network"
+                    query={GET_NEARBY_DRIVERS}
+                    pollInterval={1000}
+                    skip={isDriving}
+                    onCompleted={this.handleNearbyDrivers}
+                  >
+                    {() => {
+                      return (
+                        <Query query={GET_NEARBY_RIDE} key="999">
+                          {({ subscribeToMore, data: getNearbyRide }) => {
+                            const rideSubscriptionOptions: SubscribeToMoreOptions = {
+                              document: SUBSCRIBE_NEARBY_RIDES,
+                              updateQuery: (prev, { subscriptionData }) => {
+                                if (!subscriptionData.data) {
+                                  return prev;
                                 }
-                              }}
-                            >
-                              {(acceptRideFn) => (
-                                <HomePresenter
-                                  isMenuOpen={isMenuOpen}
-                                  toggleMenu={this.toggleMenu}
-                                  isLoading={loading}
-                                  mapRef={this.mapRef}
-                                  toAddress={toAddress}
-                                  onChange={this.onChange}
-                                  pressEnter={this.pressEnter}
-                                  onClick={this.onClick}
-                                  price={price}
-                                  userData={data}
-                                  requestRideMutation={requestRideMutation}
-                                  nearbyRide={getNearbyRide}
-                                  acceptRideFn={acceptRideFn}
-                                />
-                              )}
-                            </Mutation>
-                          );
-                        }}
-                      </Query>
-                    );
-                  }}
-                </Query>
-              );
-            }}
-          </Query>
-        )}
-      </Mutation>
+                                const newObject = Object.assign({}, prev, {
+                                  GetNearbyRide: {
+                                    ...prev.GetNearbyRide,
+                                    ride:
+                                      subscriptionData.data
+                                        .NearbyRideSubscription
+                                  }
+                                });
+
+                                return newObject;
+                              }
+                            };
+                            subscribeToMore(rideSubscriptionOptions);
+                            return (
+                              <Mutation
+                                mutation={ACCEPT_RIDE}
+                                onCompleted={(data: acceptRide) => {
+                                  const { history } = this.props;
+                                  if (data.UpdateRideStatus.ok) {
+                                    toast.success('탑승 요청 승인 성공!!');
+                                    history.push({
+                                      pathname: `/ride/${data.UpdateRideStatus.rideId}`
+                                    });
+                                  } else {
+                                    toast.error(data.UpdateRideStatus.error);
+                                  }
+                                }}
+                              >
+                                {(acceptRideFn) => (
+                                  <HomePresenter
+                                    isMenuOpen={isMenuOpen}
+                                    toggleMenu={this.toggleMenu}
+                                    isLoading={loading}
+                                    mapRef={this.mapRef}
+                                    toAddress={toAddress}
+                                    onChange={this.onChange}
+                                    pressEnter={this.pressEnter}
+                                    onClick={this.onClick}
+                                    price={price}
+                                    userData={data}
+                                    requestRideMutation={rideMutation}
+                                    nearbyRide={getNearbyRide}
+                                    acceptRideFn={acceptRideFn}
+                                    isDriving={isDriving}
+                                  />
+                                )}
+                              </Mutation>
+                            );
+                          }}
+                        </Query>
+                      );
+                    }}
+                  </Query>
+                );
+              }}
+            </Mutation>
+          );
+        }}
+      </Query>
     );
   }
 }

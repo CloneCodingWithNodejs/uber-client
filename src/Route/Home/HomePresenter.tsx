@@ -90,6 +90,7 @@ interface IProps {
   requestRideMutation: MutationFunction<requestRide, requestRideVariables>;
   nearbyRide?: getRides;
   acceptRideFn?: any;
+  isDriving: boolean;
 }
 
 const HomePresenter: React.SFC<IProps> = ({
@@ -105,10 +106,11 @@ const HomePresenter: React.SFC<IProps> = ({
   userData: { GetMyProfile: { user = null } = {} } = {},
   requestRideMutation,
   nearbyRide: { GetNearbyRide: { ride = null } = {} } = {},
-  acceptRideFn
+  acceptRideFn,
+  isDriving
 }) => (
   <>
-    {ride && (
+    {isDriving && ride && (
       <RidePopUp
         id={ride.id}
         acceptRideFn={acceptRideFn}
