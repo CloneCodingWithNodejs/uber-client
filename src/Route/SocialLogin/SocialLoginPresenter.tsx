@@ -152,7 +152,6 @@ const SocialLoginPresenter: React.SFC<IProps> = ({
           fields="first_name,email,picture,last_name"
           callback={loginCallback}
           cssClass="facebook__button"
-          onClick={null}
           icon={
             <SocialImage
               alt="google"
