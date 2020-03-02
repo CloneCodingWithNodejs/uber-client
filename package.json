@@ -54,7 +54,7 @@
     "eject": "react-scripts eject",
     "precodegen": "apollo schema:download --endpoint=https://uber-clonekhj.herokuapp.com//graphql",
     "codegen": "apollo codegen:generate src/types/api.d.ts --queries=src/**/*.ts --addTypename --localSchemaFile=schema.json --target typescript --outputFlat",
-    "deploy": "gh-pages -d dist",
+    "deploy": "gh-pages -d build",
     "predeploy": "npm run build"
   },
   "eslintConfig": {
@@ -86,5 +86,5 @@
     "eslint-plugin-react-hooks": "^1.7.0",
     "gh-pages": "^2.2.0"
   },
-  "homepage": "https://github.com/CloneCodingWithNodejs/uber-client"
+  "homepage": "https://CloneCodingWithNodejs.github.io/uber-client"
 }
