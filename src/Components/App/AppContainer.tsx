@@ -1,4 +1,3 @@
-/* eslint-disable react/prop-types */
 import React from 'react';
 import { ToastContainer } from 'react-toastify';
 import { graphql } from 'react-apollo';
