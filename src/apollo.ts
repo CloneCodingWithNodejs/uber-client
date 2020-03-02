@@ -33,8 +33,8 @@ const authMiddleware = new ApolloLink((operation: Operation, forward: any) => {
 
 const httpLink = new HttpLink({
   uri: isDev
-    ? 'https://uber-clonekhj.herokuapp.com//graphql'
-    : 'https://uber-clonekhj.herokuapp.com//graphql'
+    ? 'https://uber-clonekhj.herokuapp.com/graphql'
+    : 'https://uber-clonekhj.herokuapp.com/graphql'
 });
 
 const wsLink = new WebSocketLink({
@@ -46,7 +46,7 @@ const wsLink = new WebSocketLink({
   },
   uri: isDev
     ? 'ws://uber-clonekhj.herokuapp.com/graphql/subscription'
-    : 'ws://uber-clonekhj.herokuapp.com//graphql/subscription'
+    : 'ws://uber-clonekhj.herokuapp.com/graphql/subscription'
 });
 
 // 첫번째 함수가 true이면
