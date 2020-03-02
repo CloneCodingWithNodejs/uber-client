@@ -45,8 +45,8 @@ const wsLink = new WebSocketLink({
     reconnect: true
   },
   uri: isDev
-    ? 'ws://uber-clonekhj.herokuapp.com/subscription'
-    : 'ws://uber-clonekhj.herokuapp.com/subscription'
+    ? 'ws://uber-clonekhj.herokuapp.com/subscriptions'
+    : 'ws://uber-clonekhj.herokuapp.com/subscriptions'
 });
 
 // 첫번째 함수가 true이면
