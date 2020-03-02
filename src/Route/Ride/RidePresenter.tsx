@@ -1,5 +1,13 @@
 import React from 'react';
-import { getRide, userProfile, updateRide } from '../../types/api';
+import {
+  getRide,
+  userProfile,
+  updateRide,
+  updateIsRidingStatus,
+  updateIsRidingStatusVariables,
+  completeRide,
+  completeRideVariables
+} from '../../types/api';
 import styled from 'styled-components';
 import Button from '../../Components/Button';
 import { Link } from 'react-router-dom';
@@ -53,13 +61,20 @@ interface IProps {
   loading: boolean;
   updateRideFn: MutationFunction<updateRide, any>;
   rideId: string;
+  updateIsRideMutation: MutationFunction<
+    updateIsRidingStatus,
+    updateIsRidingStatusVariables
+  >;
+  completeRideMutation: MutationFunction<completeRide, completeRideVariables>;
 }
 
 const RidePresenter: React.SFC<IProps> = ({
   getRideData: { GetRide: { ride = null } = {} } = {},
   userData: { GetMyProfile: { user = null } = {} } = {},
   updateRideFn,
-  rideId
+  rideId,
+  updateIsRideMutation,
+  completeRideMutation
 }) => (
   <Container>
     {ride && user && (
@@ -98,50 +113,74 @@ const RidePresenter: React.SFC<IProps> = ({
         <Title>Status</Title>
         <Data>{ride.status}</Data>
         <Buttons>
-          {ride.driver.id === user.id && ride.status === 'ACCEPTED' && (
-            <ExtendedButton
-              type="button"
-              value="승객 태우기"
-              onClick={() => {
-                updateRideFn({
-                  variables: {
-                    rideId: ride.id,
-                    status: 'ONROUTE'
-                  },
-                  refetchQueries: [
-                    {
-                      query: GET_RIDE,
-                      variables: { rideId: parseInt(rideId) }
-                    }
-                  ]
-                });
-                toast.success('탑승완료 주행중입니다!');
-              }}
-            />
-          )}
-          {ride.driver.id === user.id && ride.status === 'ONROUTE' && (
-            <ExtendedButton
-              type="button"
-              value="주행 종료"
-              onClick={() => {
-                updateRideFn({
-                  variables: {
-                    rideId: ride.id,
-                    status: 'FINISHED'
-                  },
-                  refetchQueries: [
-                    {
-                      query: GET_RIDE,
-                      variables: { rideId: parseInt(rideId) }
-                    }
-                  ]
-                });
-                toast.success('목적지 도착 이용해주셔서 감사합니다 :)');
-              }}
-            />
-          )}
-          {(ride.driver.id === user.id || ride.passenger.id === user.id) &&
+          {ride.driver ? (
+            ride.driver.id === user.id &&
             ride.status === 'ACCEPTED' && (
+              <ExtendedButton
+                type="button"
+                value="승객 태우기"
+                onClick={() => {
+                  updateRideFn({
+                    variables: {
+                      rideId: ride.id,
+                      status: 'ONROUTE'
+                    },
+                    refetchQueries: [
+                      {
+                        query: GET_RIDE,
+                        variables: { rideId: parseInt(rideId) }
+                      }
+                    ]
+                  });
+                  toast.success('탑승완료 주행중입니다!');
+                }}
+              />
+            )
+          ) : (
+            <></>
+          )}
+          {ride.driver &&
+            ride.status === 'ONROUTE' &&
+            ride.driver.id === user.id && (
+              <ExtendedButton
+                type="button"
+                value="주행 종료"
+                onClick={() => {
+                  updateRideFn({
+                    variables: {
+                      rideId: ride.id,
+                      status: 'FINISHED'
+                    },
+                    refetchQueries: [
+                      {
+                        query: GET_RIDE,
+                        variables: { rideId: parseInt(rideId) }
+                      }
+                    ]
+                  });
+
+                  updateIsRideMutation({
+                    variables: { userId: ride.passenger.id }
+                  });
+
+                  completeRideMutation({
+                    variables: {
+                      driverId: ride!.driver!.id,
+                      passengerId: ride.passenger.id,
+                      rideId: parseInt(rideId)
+                    }
+                  });
+
+                  toast.success('목적지 도착 이용해주셔서 감사합니다 :)');
+
+                  setTimeout(() => {
+                    window.location.href = '/';
+                  }, 1500);
+                }}
+              />
+            )}
+          {(ride!.driver!.id === user.id || ride.passenger.id === user.id) &&
+            (ride.status === 'ACCEPTED' || ride.status === 'ONROUTE') && (
               <Link to={`/chat/${ride.chatId}`}>
                 <ExtendedButton type="button" value="채팅하기" onClick={null} />
               </Link>

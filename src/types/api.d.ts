@@ -31,6 +31,96 @@ export interface addPlaceVariables {
 // This file was automatically generated and should not be edited.
 
 // ====================================================
+// GraphQL query operation: getChat
+// ====================================================
+
+export interface getChat_GetChat_chat_messages {
+  __typename: "Message";
+  id: number;
+  text: string;
+  userId: number | null;
+}
+
+export interface getChat_GetChat_chat {
+  __typename: "Chat";
+  passengerId: number;
+  driverId: number;
+  messages: (getChat_GetChat_chat_messages | null)[] | null;
+}
+
+export interface getChat_GetChat {
+  __typename: "GetChatResponse";
+  ok: boolean;
+  error: string | null;
+  chat: getChat_GetChat_chat | null;
+}
+
+export interface getChat {
+  GetChat: getChat_GetChat;
+}
+
+export interface getChatVariables {
+  chatId: number;
+}
+
+/* tslint:disable */
+/* eslint-disable */
+// @generated
+// This file was automatically generated and should not be edited.
+
+// ====================================================
+// GraphQL mutation operation: sendMessage
+// ====================================================
+
+export interface sendMessage_SendChatMessage_message {
+  __typename: "Message";
+  id: number;
+  text: string;
+  userId: number | null;
+}
+
+export interface sendMessage_SendChatMessage {
+  __typename: "SendChatMessageResponse";
+  ok: boolean;
+  error: string | null;
+  message: sendMessage_SendChatMessage_message | null;
+}
+
+export interface sendMessage {
+  SendChatMessage: sendMessage_SendChatMessage;
+}
+
+export interface sendMessageVariables {
+  text: string;
+  chatId: number;
+}
+
+/* tslint:disable */
+/* eslint-disable */
+// @generated
+// This file was automatically generated and should not be edited.
+
+// ====================================================
+// GraphQL subscription operation: messageSubscription
+// ====================================================
+
+export interface messageSubscription_MessageSubscription {
+  __typename: "Message";
+  id: number;
+  text: string;
+  userId: number | null;
+}
+
+export interface messageSubscription {
+  MessageSubscription: messageSubscription_MessageSubscription | null;
+}
+
+/* tslint:disable */
+/* eslint-disable */
+// @generated
+// This file was automatically generated and should not be edited.
+
+// ====================================================
 // GraphQL mutation operation: editProfile
 // ====================================================
 
@@ -356,7 +446,7 @@ export interface getRide_GetRide_ride {
   distance: string;
   passenger: getRide_GetRide_ride_passenger;
   chatId: number | null;
-  driver: getRide_GetRide_ride_driver;
+  driver: getRide_GetRide_ride_driver | null;
 }
 
 export interface getRide_GetRide {
@@ -408,7 +498,7 @@ export interface rideUpdates_RideStatusSubscription {
   distance: string;
   passenger: rideUpdates_RideStatusSubscription_passenger;
   chatId: number | null;
-  driver: rideUpdates_RideStatusSubscription_driver;
+  driver: rideUpdates_RideStatusSubscription_driver | null;
 }
 
 export interface rideUpdates {
@@ -438,6 +528,55 @@ export interface updateRide {
 export interface updateRideVariables {
   rideId: number;
   status: StatusOption;
+}
+
+/* tslint:disable */
+/* eslint-disable */
+// @generated
+// This file was automatically generated and should not be edited.
+
+// ====================================================
+// GraphQL mutation operation: updateIsRidingStatus
+// ====================================================
+
+export interface updateIsRidingStatus_UpdateIsRideStatus {
+  __typename: "UpdateIsRideStatusResponse";
+  ok: boolean;
+  error: string | null;
+  userId: number | null;
+}
+
+export interface updateIsRidingStatus {
+  UpdateIsRideStatus: updateIsRidingStatus_UpdateIsRideStatus;
+}
+
+export interface updateIsRidingStatusVariables {
+  userId: number;
+}
+
+/* tslint:disable */
+/* eslint-disable */
+// @generated
+// This file was automatically generated and should not be edited.
+
+// ====================================================
+// GraphQL mutation operation: completeRide
+// ====================================================
+
+export interface completeRide_CompleteRide {
+  __typename: "CompleteRideResponse";
+  ok: boolean;
+  error: string | null;
+}
+
+export interface completeRide {
+  CompleteRide: completeRide_CompleteRide;
+}
+
+export interface completeRideVariables {
+  passengerId: number;
+  driverId: number;
+  rideId: number;
 }
 
 /* tslint:disable */

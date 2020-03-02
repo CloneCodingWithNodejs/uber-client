@@ -298,10 +298,11 @@ class HomeContatiner extends React.Component<any, IState> {
     const {
       GetNearByDrivers: { ok, drivers }
     } = data;
-
-    if (ok && drivers) {
+    const { isDriving } = this.state;
+    if (ok && drivers && !isDriving) {
       drivers.forEach((driver) => {
         if (driver) {
+          console.log(driver);
           const existingDriver:
             | google.maps.Marker
             | undefined = this.drivers.find(
@@ -351,6 +352,11 @@ class HomeContatiner extends React.Component<any, IState> {
           }
         }
       });
+    } else {
+      console.log('실향됨');
+      for (let i = 0; i < this.drivers.length; i++) {
+        this.drivers[i].setMap(null);
+      }
     }
   };
 
@@ -421,8 +427,8 @@ class HomeContatiner extends React.Component<any, IState> {
                   <Query<getDrivers>
                     fetchPolicy="cache-and-network"
                     query={GET_NEARBY_DRIVERS}
-                    pollInterval={1000}
                     skip={isDriving}
+                    pollInterval={1000}
                     onCompleted={this.handleNearbyDrivers}
                   >
                     {() => {

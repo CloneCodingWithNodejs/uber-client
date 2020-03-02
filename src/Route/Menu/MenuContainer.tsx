@@ -7,7 +7,15 @@ import { USER_PROFILE } from '../../sharedQueries/sharedQueries2';
 import { TOGGLE_DRIVING } from './MenuQueries';
 
 class MenuContainer extends React.Component<any, any> {
+  constructor(props) {
+    super(props);
+    this.state = {
+      userDriving: false
+    };
+  }
+
   render() {
+    const { userDriving } = this.state;
     return (
       // <Mutation<toggleDriving>
       //   mutation={TOGGLE_DRIVING}
@@ -28,6 +36,12 @@ class MenuContainer extends React.Component<any, any> {
       <Mutation<toggleDriving>
         mutation={TOGGLE_DRIVING}
         refetchQueries={[{ query: USER_PROFILE }]}
+        onCompleted={() => {
+          const { userDriving } = this.state;
+          this.setState({
+            userDriving: !userDriving
+          });
+        }}
       >
         {(toggleDrivingFn) => (
           <Query<userProfile, any> query={USER_PROFILE}>
@@ -36,6 +50,7 @@ class MenuContainer extends React.Component<any, any> {
                 data={data}
                 isLoading={loading}
                 toggleDrivingFn={toggleDrivingFn}
+                userDriving={userDriving}
               />
             )}
           </Query>

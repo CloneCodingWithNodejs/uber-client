@@ -84,12 +84,14 @@ interface IProps {
   isLoading: boolean;
   data?: userProfile;
   toggleDrivingFn: any;
+  userDriving: boolean;
 }
 
 const MenuPresenter: React.SFC<IProps> = ({
   data: { GetMyProfile: { user = null } = {} } = {},
   isLoading,
-  toggleDrivingFn
+  toggleDrivingFn,
+  userDriving
 }) => (
   <MainDiv>
     {!isLoading && user && (
@@ -116,8 +118,8 @@ const MenuPresenter: React.SFC<IProps> = ({
           <SLink to="/account-settings">
             <Span>프로필 설정</Span>
           </SLink>
-          <DriveBtn onClick={toggleDrivingFn} isDriving={user.isDriving}>
-            {user.isDriving ? 'Stop Driving' : 'StartDriving'}
+          <DriveBtn onClick={toggleDrivingFn} isDriving={userDriving}>
+            {userDriving ? 'Stop Driving' : 'StartDriving'}
           </DriveBtn>
         </MenuDiv>
       </>
