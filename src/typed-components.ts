@@ -7,6 +7,7 @@ interface IThemeInterface {
   googleColor: string;
   blackColor: string;
   yellowColor: string;
+  greyColor: string;
 }
 
 const {
