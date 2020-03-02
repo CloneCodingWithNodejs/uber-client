@@ -6,7 +6,7 @@ import {
   sendMessage
 } from '../../types/api';
 import Message from '../../Components/Message';
-import styled from 'styled-components';
+import styled from '../../typed-components';
 import Input from '../../Components/Input';
 import Form from '../../Components/Form';
 import '../../static/css/chatScroll.css';

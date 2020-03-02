@@ -26,7 +26,7 @@ class AddPlaceContainer extends React.Component<any, IState> {
     };
   }
 
-  public onChange = (event) => {
+  onChange = (event) => {
     const {
       target: { name, value }
     } = event;

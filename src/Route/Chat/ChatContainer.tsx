@@ -113,7 +113,7 @@ const ChatContainer: React.FC<any> = (props) => {
       </>
     );
   } else {
-    return <div></div>;
+    return <div />;
   }
 };
 

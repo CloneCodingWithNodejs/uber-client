@@ -3,7 +3,17 @@
   "rules": {
     "max-classes-per-file": false,
     "jsx-no-lambda": false,
-    "no-console": false
+    "no-console": false,
+    "ordered-imports": false,
+    "jsx-boolean-value": false,
+    "member-access": false,
+    "object-literal-sort-keys": false,
+    "radix": false,
+    "no-shadowed-variable": false,
+    "prefer-for-of": false,
+    "comment-format": false,
+    "interface-name": false,
+    "jsx-self-close": false
   },
   "linterOptions": {
     "exclude": [

@@ -1,5 +1,5 @@
 import React from 'react';
-import styled from 'styled-components';
+import styled from '../../typed-components';
 import Helmet from 'react-helmet';
 import Background from '../../static/verifyPhone.jpg';
 import Input from '../../Components/Input';

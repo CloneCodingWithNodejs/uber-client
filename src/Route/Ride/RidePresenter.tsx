@@ -8,7 +8,7 @@ import {
   completeRide,
   completeRideVariables
 } from '../../types/api';
-import styled from 'styled-components';
+import styled from '../../typed-components';
 import Button from '../../Components/Button';
 import { Link } from 'react-router-dom';
 import { MutationFunction } from 'react-apollo';

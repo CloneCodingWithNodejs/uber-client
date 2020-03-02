@@ -1,6 +1,6 @@
 /* eslint-disable jsx-a11y/accessible-emoji */
 import React from 'react';
-import styled from 'styled-components';
+import styled from '../../typed-components';
 import AddressBar from '../../Components/AddressBar';
 import Button from '../../Components/Button';
 

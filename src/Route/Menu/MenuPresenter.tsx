@@ -3,7 +3,7 @@
 /* eslint-disable no-lone-blocks */
 /* eslint-disable no-confusing-arrow */
 import React from 'react';
-import styled from 'styled-components';
+import styled from '../../typed-components';
 import { Link } from 'react-router-dom';
 import { userProfile } from '../../types/api';
 import noImage from '../../static/no-image-icon.png';

@@ -342,7 +342,7 @@ class HomeContatiner extends React.Component<any, IState> {
                 markerOptions
               );
 
-              //마커에 아이디를 지정함 .set(키,밸류)
+              // 마커에 아이디를 지정함 .set(키,밸류)
               newMarker.set('id', driver.id);
               newMarker.setMap(this.map);
               this.drivers.push(newMarker);
@@ -368,7 +368,9 @@ class HomeContatiner extends React.Component<any, IState> {
         pathname: `/ride/${data.RequestRide.ride!.id}`
       });
     }
-    if (data.RequestRide.error) toast.error(data.RequestRide.error);
+    if (data.RequestRide.error) {
+      toast.error(data.RequestRide.error);
+    }
   };
 
   public handleProfileQuery = (data: userProfile) => {

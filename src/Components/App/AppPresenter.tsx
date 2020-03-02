@@ -22,13 +22,13 @@ import Home from '../../Route/Home/index';
 import AccountSettings from '../../Route/Settings/index';
 import Chat from '../../Route/Chat/index';
 
-interface Iprops {
+interface IProps {
   isLoggedIn: boolean;
 }
 
-const AppPresenter: React.SFC<Iprops> = ({ isLoggedIn }) => {
+const AppPresenter: React.SFC<IProps> = ({ isLoggedIn }) => {
   return (
-    <BrowserRouter>
+    <BrowserRouter basename={process.env.PUBLIC_URL}>
       {isLoggedIn ? <LoggedInRoutes /> : <LoggedOutRoutes />}
     </BrowserRouter>
   );

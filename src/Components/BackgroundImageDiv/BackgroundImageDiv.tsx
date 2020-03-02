@@ -1,4 +1,4 @@
-import styled from 'styled-components';
+import styled from '../../typed-components';
 
 const Container = styled.div`
   background-size: cover;

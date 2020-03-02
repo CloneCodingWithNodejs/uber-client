@@ -1,6 +1,6 @@
-/* eslint-disable react/jsx-one-expression-per-line */
 /* eslint-disable jsx-a11y/accessible-emoji */
-import styled from 'styled-components';
+/* eslint-disable react/jsx-one-expression-per-line */
+import styled from '../../typed-components';
 import React from 'react';
 import { RouteComponentProps, Link } from 'react-router-dom';
 import Helmet from 'react-helmet';
