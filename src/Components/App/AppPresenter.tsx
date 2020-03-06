@@ -4,7 +4,7 @@
 /* eslint-disable no-unused-expressions */
 import React from 'react';
 import propTypes from 'prop-types';
-import { Switch, Route, Redirect, HashRouter } from 'react-router-dom';
+import { Switch, Route, Redirect, BrowserRouter } from 'react-router-dom';
 import Login from '../../Route/Login/index';
 import PhoneLogin from '../../Route/PhoneLogin/index';
 import VerifyPhone from '../../Route/VerifyPhone/index';
@@ -28,9 +28,9 @@ interface IProps {
 
 const AppPresenter: React.SFC<IProps> = ({ isLoggedIn }) => {
   return (
-    <HashRouter basename={process.env.PUBLIC_URL}>
+    <BrowserRouter basename={process.env.PUBLIC_URL}>
       {isLoggedIn ? <LoggedInRoutes /> : <LoggedOutRoutes />}
-    </HashRouter>
+    </BrowserRouter>
   );
 };
 
